@@ -1,14 +1,18 @@
 package com.example.juraj.note;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.AppBarLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
@@ -16,12 +20,24 @@ import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateInterpolator;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.TimePicker;
+
 import com.example.juraj.note.data.Constants;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -39,6 +55,7 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
     private int revealY;
     private GoogleMap gMap;
     private MapView mMap;
+    private LatLng location;
 
     // typed views
     private TextView dateTo;
@@ -86,6 +103,16 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
 
                 DateFormat sdf = SimpleDateFormat.getDateTimeInstance();
                 Date date = new Date();
+                /*data.add(Constants.NOTE_CREATED, sdf.format(date));
+                data.add(Constants.NOTE_NOTIFICATION, "");
+
+                if(location != null) {
+                    data.add(Constants.NOTE_LATITUDE, String.valueOf(location.latitude));
+                    data.add(Constants.NOTE_LONGITUDE, String.valueOf(location.longitude));
+                } else {
+                    data.add(Constants.NOTE_LATITUDE, "");
+                    data.add(Constants.NOTE_LONGITUDE, "");
+                }*/
                 intent.putExtra(Constants.NOTE_CREATED, sdf.format(date));
 
                 intent.putExtra(Constants.NOTE_DATE_FROM, sdf.format(calendarFrom.getTime()));
@@ -119,7 +146,7 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         mMap.onCreate(savedInstanceState);
         mMap.onResume();
         try {
-            MapsInitializer.initialize(getApplicationContext());
+            MapsInitializer.initialize(getBaseContext());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -250,6 +277,7 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View view) {
+
         switch (view.getId()) {
             case R.id.tv_date_From:
                 onDateTextClick(true);
@@ -268,6 +296,13 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                 break;
             default:
                 focusedEditText.getText().append(" ").append(view.getTag().toString());
+                if(focusedEditText.getId() == R.id.et_new_note_title){
+                    View v = findViewById(R.id.et_new_note_text);
+                    if(v.requestFocus()) {
+                        setFocusedET(v);
+                    }
+                }
+                break;
         }
     }
 
@@ -314,7 +349,17 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(final GoogleMap googleMap) {
+        gMap = googleMap;
+        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                gMap.clear();
+                gMap.addMarker(new MarkerOptions().position(latLng));
+                gMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                location = latLng;
+            }
+        });
 
     }
 }

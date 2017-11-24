@@ -28,7 +28,8 @@ public class NoteDao extends AbstractDao<Note, Long> {
         public final static Property Created = new Property(3, java.util.Date.class, "created", false, "CREATED");
         public final static Property Date_from = new Property(4, java.util.Date.class, "date_from", false, "DATE_FROM");
         public final static Property Date_to = new Property(5, java.util.Date.class, "date_to", false, "DATE_TO");
-        public final static Property Latlon = new Property(6, String.class, "latlon", false, "LATLON");
+        public final static Property Latitude = new Property(6, String.class, "latitude", false, "LATITUDE");
+        public final static Property Longitude = new Property(7, String.class, "longitude", false, "LONGITUDE");
     }
 
 
@@ -50,7 +51,8 @@ public class NoteDao extends AbstractDao<Note, Long> {
                 "\"CREATED\" INTEGER NOT NULL ," + // 3: created
                 "\"DATE_FROM\" INTEGER," + // 4: date_from
                 "\"DATE_TO\" INTEGER," + // 5: date_to
-                "\"LATLON\" TEXT);"); // 6: latlon
+                "\"LATITUDE\" TEXT," + // 6: latitude
+                "\"LONGITUDE\" TEXT);"); // 7: longitude
     }
 
     /** Drops the underlying database table. */
@@ -81,9 +83,14 @@ public class NoteDao extends AbstractDao<Note, Long> {
             stmt.bindLong(6, date_to.getTime());
         }
  
-        String latlon = entity.getLatlon();
-        if (latlon != null) {
-            stmt.bindString(7, latlon);
+        String latitude = entity.getLatitude();
+        if (latitude != null) {
+            stmt.bindString(7, latitude);
+        }
+ 
+        String longitude = entity.getLongitude();
+        if (longitude != null) {
+            stmt.bindString(8, longitude);
         }
     }
 
@@ -109,9 +116,14 @@ public class NoteDao extends AbstractDao<Note, Long> {
             stmt.bindLong(6, date_to.getTime());
         }
  
-        String latlon = entity.getLatlon();
-        if (latlon != null) {
-            stmt.bindString(7, latlon);
+        String latitude = entity.getLatitude();
+        if (latitude != null) {
+            stmt.bindString(7, latitude);
+        }
+ 
+        String longitude = entity.getLongitude();
+        if (longitude != null) {
+            stmt.bindString(8, longitude);
         }
     }
 
@@ -129,7 +141,8 @@ public class NoteDao extends AbstractDao<Note, Long> {
             new java.util.Date(cursor.getLong(offset + 3)), // created
             cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)), // date_from
             cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)), // date_to
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6) // latlon
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // latitude
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7) // longitude
         );
         return entity;
     }
@@ -142,7 +155,8 @@ public class NoteDao extends AbstractDao<Note, Long> {
         entity.setCreated(new java.util.Date(cursor.getLong(offset + 3)));
         entity.setDate_from(cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)));
         entity.setDate_to(cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)));
-        entity.setLatlon(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setLatitude(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setLongitude(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
      }
     
     @Override

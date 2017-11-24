@@ -23,7 +23,8 @@ public class Note {
     private java.util.Date created;
     private java.util.Date date_from;
     private java.util.Date date_to;
-    private String latlon;
+    private String latitude;
+    private String longitude;
 
     @Generated
     public Note() {
@@ -34,14 +35,15 @@ public class Note {
     }
 
     @Generated
-    public Note(Long id, String title, String text, java.util.Date created, java.util.Date date_from, java.util.Date date_to, String latlon) {
+    public Note(Long id, String title, String text, java.util.Date created, java.util.Date date_from, java.util.Date date_to, String latitude, String longitude) {
         this.id = id;
         this.title = title;
         this.text = text;
         this.created = created;
         this.date_from = date_from;
         this.date_to = date_to;
-        this.latlon = latlon;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public Long getId() {
@@ -98,12 +100,20 @@ public class Note {
         this.date_to = date_to;
     }
 
-    public String getLatlon() {
-        return latlon;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public void setLatlon(String latlon) {
-        this.latlon = latlon;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
 }

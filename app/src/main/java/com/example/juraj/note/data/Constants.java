@@ -9,7 +9,8 @@ public abstract class Constants {
     public static final String NOTE_TEXT = "NOTE_TEXT";
     public static final String NOTE_CREATED = "NOTE_CREATED";
     public static final String NOTE_NOTIFICATION = "NOTE_NOTIFICATION";
-    public static final String NOTE_LATLON = "NOTE_LATLON";
     public static final String NOTE_DATE_FROM = "NOTE_DATE_FROM";
     public static final String NOTE_DATE_TO = "NOTE_DATE_TO";
+    public static final String NOTE_LATITUDE = "NOTE_LATITUDE";
+    public static final String NOTE_LONGITUDE = "NOTE_LONGITUDE";
 }

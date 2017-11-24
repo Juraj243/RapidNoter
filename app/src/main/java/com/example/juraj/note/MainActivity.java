@@ -14,17 +14,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.Toast;
+
 import com.example.juraj.note.adapters.SectionsPagerAdapter;
 import com.example.juraj.note.data.Constants;
 import com.example.juraj.note.data.DaoMaster;
 import com.example.juraj.note.data.DaoSession;
 import com.example.juraj.note.data.Note;
+
 import org.greenrobot.greendao.database.Database;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Juraj on 18.11.2017.
@@ -69,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
         final Database db = helper.getWritableDb();
         DaoMaster dMaster = new DaoMaster(db);
         daoSession = dMaster.newSession();
-//        DaoMaster.dropAllTables(db, true);
-//        DaoMaster.createAllTables(db, true);
+        //DaoMaster.dropAllTables(db, true);
+        //DaoMaster.createAllTables(db, true);
         //daoSession.getNoteDao().deleteAll();
         //daoSession.getNoteDao().insert(new Note(1l,"Nazov","poznamka, poznamka", new Date(), null, ""));
         findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
@@ -98,6 +101,11 @@ public class MainActivity extends AppCompatActivity {
             Note noteToSave = new Note();
             noteToSave.setTitle(data.getStringExtra(Constants.NOTE_TITLE));
             noteToSave.setText(data.getStringExtra(Constants.NOTE_TEXT));
+            /*noteToSave.setTitle(res.get(Constants.NOTE_TITLE));
+            noteToSave.setText(res.get(Constants.NOTE_TEXT));*/
+            // TODO datefrom date to
+            //noteToSave.setLatitude(res.get((Constants.NOTE_LATITUDE)));
+            //noteToSave.setLongitude(res.get((Constants.NOTE_LONGITUDE)));
             DateFormat df = SimpleDateFormat.getDateTimeInstance();
             //Todo map location
             setDateForNote(noteToSave, data, Constants.NOTE_DATE_FROM);
