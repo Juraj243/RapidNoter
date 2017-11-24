@@ -1,126 +1,142 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/create_note_root"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorAccentLight"
-    android:fitsSystemWindows="true">
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             android:id="@+id/create_note_root"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             android:background="@color/colorAccentLight"
+                                             android:fitsSystemWindows="true">
 
     <android.support.constraint.ConstraintLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:padding="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <EditText
-            android:id="@+id/et_new_note_title"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="Title"
+            android:layout_height="0dp"
+            android:padding="8dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
         <EditText
-            android:id="@+id/et_new_note_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="top"
-            android:hint="Type note here"
-            android:inputType="textMultiLine"
-            android:lineSpacingExtra="2dp"
-            android:lines="5"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_new_note_title" />
+                android:id="@+id/et_new_note_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Title"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        <EditText
+                android:id="@+id/et_new_note_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:hint="Type note here"
+                android:inputType="textMultiLine"
+                android:lineSpacingExtra="2dp"
+                android:lines="5"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_new_note_title"/>
 
         <HorizontalScrollView
-            android:id="@+id/sv_temps"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_new_note_text">
+                android:id="@+id/sv_temps"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_new_note_text">
 
             <LinearLayout
-                android:id="@+id/ll_note_temp_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/note_temp1"
-                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:id="@+id/ll_note_temp_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:tag="Dovolenka"
-                    android:text="poznamka" />
+                    android:orientation="horizontal">
+
+                <Button
+                        android:id="@+id/note_temp1"
+                        style="@style/Base.Widget.AppCompat.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="Dovolenka"
+                        android:text="poznamka"/>
 
             </LinearLayout>
         </HorizontalScrollView>
 
         <TextView
-            android:id="@+id/pick_date_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Pick date/s:"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sv_temps" />
+                android:id="@+id/pick_date_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Pick date/s:"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sv_temps"/>
 
         <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="One-time"
-            app:layout_constraintBottom_toBottomOf="@+id/pick_date_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/pick_date_text" />
+                android:id="@+id/cb_end_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="End-time"
+                app:layout_constraintBottom_toBottomOf="@+id/pick_date_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/pick_date_text"/>
 
-        <Button
-            android:id="@+id/bt_date_from"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="Date"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/bt_date_to"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+        <!--<Button-->
+        <!--android:id="@+id/bt_date_from"-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="From"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintRight_toLeftOf="@+id/bt_date_to"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/checkBox"/>-->
 
-        <Button
-            android:id="@+id/bt_date_to"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="To"
-            app:layout_constraintLeft_toRightOf="@+id/bt_date_from"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+        <!--<Button-->
+        <!--android:id="@+id/bt_date_to"-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="To"-->
+        <!--app:layout_constraintLeft_toRightOf="@+id/bt_date_from"-->
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/checkBox" />-->
+
+        <TextView android:id="@+id/tv_date_From" android:text="@string/date_from" android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  app:layout_constraintTop_toBottomOf="@id/pick_date_text"
+                  app:layout_constraintLeft_toLeftOf="parent"/>
+        <TextView android:id="@+id/tv_time_From" android:text="@string/time_from" android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  app:layout_constraintTop_toBottomOf="@id/pick_date_text"
+                  app:layout_constraintLeft_toRightOf="@id/tv_date_From"/>
+        <TextView android:id="@+id/tv_date_To" android:text="@string/date_to" android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  app:layout_constraintTop_toBottomOf="@id/pick_date_text"
+                  app:layout_constraintRight_toRightOf="parent"/>
+        <TextView android:id="@+id/tv_time_To" android:text="@string/time_to" android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  app:layout_constraintTop_toBottomOf="@id/pick_date_text"
+                  app:layout_constraintRight_toLeftOf="@id/tv_date_To"/>
 
         <com.google.android.gms.maps.MapView
-            android:id="@+id/map_new_note"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@color/colorAccent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bt_date_to"
-            android:layout_marginTop="8dp">
+                android:id="@+id/map_new_note"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/colorAccent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bt_date_to"
+                android:layout_marginTop="8dp">
 
         </com.google.android.gms.maps.MapView>
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fb_save_note"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_margin="16dp"
-            android:src="@mipmap/ic_save_white_36dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+                android:id="@+id/fb_save_note"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_margin="16dp"
+                android:src="@mipmap/ic_save_white_36dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"/>
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

@@ -14,20 +14,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.Toast;
-
 import com.example.juraj.note.adapters.SectionsPagerAdapter;
 import com.example.juraj.note.data.Constants;
 import com.example.juraj.note.data.DaoMaster;
 import com.example.juraj.note.data.DaoSession;
 import com.example.juraj.note.data.Note;
-
 import org.greenrobot.greendao.database.Database;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Juraj on 18.11.2017.
@@ -72,8 +69,8 @@ public class MainActivity extends AppCompatActivity {
         final Database db = helper.getWritableDb();
         DaoMaster dMaster = new DaoMaster(db);
         daoSession = dMaster.newSession();
-        //DaoMaster.dropAllTables(db, true);
-        //DaoMaster.createAllTables(db, true);
+//        DaoMaster.dropAllTables(db, true);
+//        DaoMaster.createAllTables(db, true);
         //daoSession.getNoteDao().deleteAll();
         //daoSession.getNoteDao().insert(new Note(1l,"Nazov","poznamka, poznamka", new Date(), null, ""));
         findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
@@ -90,33 +87,59 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 DaoMaster.dropAllTables(db, true);
                 DaoMaster.createAllTables(db, true);
-                ((GridView)findViewById(R.id.notes_container)).invalidateViews();
+                ((GridView) findViewById(R.id.notes_container)).invalidateViews();
             }
         });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == RESULT_OK && requestCode == CREATE_NOTE_REQUEST_CODE){
-            List<String> res = data.getStringArrayListExtra("note_data");
+        if (resultCode == RESULT_OK && requestCode == CREATE_NOTE_REQUEST_CODE) {
             Note noteToSave = new Note();
-            noteToSave.setTitle(res.get(Constants.NOTE_TITLE));
-            noteToSave.setText(res.get(Constants.NOTE_TEXT));
+            noteToSave.setTitle(data.getStringExtra(Constants.NOTE_TITLE));
+            noteToSave.setText(data.getStringExtra(Constants.NOTE_TEXT));
             DateFormat df = SimpleDateFormat.getDateTimeInstance();
-            //Todo date from, date to, map location
+            //Todo map location
+            setDateForNote(noteToSave, data, Constants.NOTE_DATE_FROM);
+            setDateForNote(noteToSave, data, Constants.NOTE_DATE_TO);
             try {
-                Date date = df.parse(res.get(Constants.NOTE_CREATED));
-                Toast.makeText(this, res.get(Constants.NOTE_CREATED), Toast.LENGTH_LONG).show();
+                Date date = df.parse(data.getStringExtra(Constants.NOTE_CREATED));
+                Toast.makeText(this, data.getStringExtra(Constants.NOTE_CREATED), Toast.LENGTH_LONG).show();
                 noteToSave.setCreated(date);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
 
             daoSession.getNoteDao().insert(noteToSave);
-        } else if(resultCode == RESULT_CANCELED){
+        } else if (resultCode == RESULT_CANCELED) {
             Toast.makeText(this, "Canceled", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void setDateForNote(Note noteToSave, Intent data, String key) {
+        String date = data.getStringExtra(key);
+        if (date == null) {
+            // log?
+            return;
+        }
+        DateFormat df = SimpleDateFormat.getDateTimeInstance();
+        try {
+            Date parsedDate = df.parse(date);
+            switch (key) {
+                case Constants.NOTE_DATE_FROM:
+                    noteToSave.setDate_from(parsedDate);
+                    break;
+                case Constants.NOTE_DATE_TO:
+                    noteToSave.setDate_to(parsedDate);
+                    break;
+                default:
+                    throw new UnsupportedOperationException(String.valueOf(key));
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -140,14 +163,14 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public DaoSession getDaoSession(){
+    public DaoSession getDaoSession() {
         return daoSession;
     }
 
-    public void presentActivity(View view){
+    public void presentActivity(View view) {
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, view, "transition");
-        int revX = (int) (view.getX() + view.getWidth()/2);
-        int revY = (int) (view.getY() + view.getHeight()/2);
+        int revX = (int) (view.getX() + view.getWidth() / 2);
+        int revY = (int) (view.getY() + view.getHeight() / 2);
 
         Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
         intent.putExtra(CreateNoteActivity.EXTRA_CIRC_REV_X, revX);

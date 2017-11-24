@@ -5,4 +5,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="date_to">date_to</string>
+    <string name="time_from">time_from</string>
+    <string name="date_from">date_from</string>
+    <string name="time_to">time_to</string>
 </resources>

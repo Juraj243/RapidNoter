@@ -1,17 +1,14 @@
 package com.example.juraj.note;
 
-import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.app.ActionBar;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.AppBarLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
@@ -19,36 +16,39 @@ import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateInterpolator;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-
+import android.widget.*;
 import com.example.juraj.note.data.Constants;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class CreateNoteActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
-    private EditText focusedEditText;
     public static final String EXTRA_CIRC_REV_X = "EXTRA_CIRCULAR_REVEAL_X";
     public static final String EXTRA_CIRC_REV_Y = "EXTRA_CIRCULAR_REVEAL_Y";
-
+    private final ArrayList<String> data = new ArrayList<>();
     View root;
+    private EditText focusedEditText;
     private int revealX;
     private int revealY;
     private GoogleMap gMap;
     private MapView mMap;
+
+    // typed views
+    private TextView dateTo;
+    private TextView timeTo;
+    private TextView dateFrom;
+    private TextView timeFrom;
+
+    // dates
+    private Calendar calendarFrom = Calendar.getInstance();
+    private Calendar calendarTo = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,17 +78,19 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         findViewById(R.id.fb_save_note).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayList<String> data = new ArrayList<>();
+
                 EditText et = (EditText) findViewById(R.id.et_new_note_title);
-                data.add(Constants.NOTE_TITLE, et.getText().toString());
+                intent.putExtra(Constants.NOTE_TITLE, et.getText().toString());
                 et = (EditText) findViewById(R.id.et_new_note_text);
-                data.add(Constants.NOTE_TEXT, et.getText().toString());
+                intent.putExtra(Constants.NOTE_TEXT, et.getText().toString());
 
                 DateFormat sdf = SimpleDateFormat.getDateTimeInstance();
                 Date date = new Date();
-                data.add(Constants.NOTE_CREATED, sdf.format(date));
+                intent.putExtra(Constants.NOTE_CREATED, sdf.format(date));
 
-                Intent intent = new Intent();
+                intent.putExtra(Constants.NOTE_DATE_FROM, sdf.format(calendarFrom.getTime()));
+                intent.putExtra(Constants.NOTE_DATE_TO, sdf.format(calendarTo.getTime()));
+
                 intent.putStringArrayListExtra("note_data", data);
                 setResult(RESULT_OK, intent);
                 unRevealActivity();
@@ -144,7 +146,37 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         } else {
             root.setVisibility(View.VISIBLE);
         }
+
+        dateTo = (TextView) findViewById(R.id.tv_date_To);
+        dateFrom = (TextView) findViewById(R.id.tv_date_From);
+        timeTo = (TextView) findViewById(R.id.tv_time_To);
+        timeFrom = (TextView) findViewById(R.id.tv_time_From);
+
+
+        Date date = new Date();
+        setDateField(dateFrom, date);
+        setTimeField(timeFrom, date);
+        date.setTime(date.getTime() + 1000 * 60 * 60);
+        setDateField(dateTo, date);
+        setTimeField(timeTo, date);
+        dateFrom.setOnClickListener(this);
+        dateTo.setOnClickListener(this);
+        timeFrom.setOnClickListener(this);
+        timeTo.setOnClickListener(this);
+        findViewById(R.id.cb_end_time).setOnClickListener(this);
+        toggleEndTimeListener();
     }
+
+    private void setTimeField(TextView tw, Date date) {
+        DateFormat format = SimpleDateFormat.getTimeInstance(DateFormat.SHORT);
+        tw.setText(format.format(date));
+    }
+
+    private void setDateField(TextView tw, Date date) {
+        DateFormat time = SimpleDateFormat.getDateInstance();
+        tw.setText(time.format(date));
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -157,9 +189,96 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         focusedEditText = (EditText) focusedET;
     }
 
+    private void onDateTextClick(final boolean from) {
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                c.set(year, month, day);
+                if (from) {
+                    setDateField(dateFrom, c.getTime());
+//                    if (calendarFrom == null) {
+//                        calendarFrom = c;
+//                    } else {
+                    calendarFrom.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+//                    }
+                } else {
+                    setDateField(dateTo, c.getTime());
+//                    if (calendarTo == null) {
+//                        calendarTo = c;
+//                    } else {
+                    calendarTo.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+//                    }
+                }
+            }
+        }, year, month, day).show();
+    }
+
+    private void onTimeTextClick(final boolean from) {
+        final Calendar c = Calendar.getInstance();
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int minute = c.get(Calendar.MINUTE);
+
+        new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                c.set(0, 0, 0, hour, minute);
+                if (from) {
+                    setTimeField(timeFrom, c.getTime());
+//                    if (calendarFrom == null) {
+//                        calendarFrom = c;
+//                    } else {
+                    calendarFrom.set(Calendar.HOUR, c.get(Calendar.HOUR));
+                    calendarFrom.set(Calendar.MINUTE, c.get(Calendar.MINUTE));
+//                    }
+                } else {
+                    setTimeField(timeTo, c.getTime());
+//                    if (calendarTo == null) {
+//                        calendarTo = c;
+//                    } else {
+                    calendarTo.set(Calendar.HOUR, c.get(Calendar.HOUR));
+                    calendarTo.set(Calendar.MINUTE, c.get(Calendar.MINUTE));
+//                    }
+                }
+            }
+        }, hour, minute, true).show();
+    }
+
     @Override
     public void onClick(View view) {
-        focusedEditText.getText().append(" ").append(view.getTag().toString());
+        switch (view.getId()) {
+            case R.id.tv_date_From:
+                onDateTextClick(true);
+                break;
+            case R.id.tv_date_To:
+                onDateTextClick(false);
+                break;
+            case R.id.tv_time_From:
+                onTimeTextClick(true);
+                break;
+            case R.id.tv_time_To:
+                onTimeTextClick(false);
+                break;
+            case R.id.cb_end_time:
+                toggleEndTimeListener();
+                break;
+            default:
+                focusedEditText.getText().append(" ").append(view.getTag().toString());
+        }
+    }
+
+    private void toggleEndTimeListener() {
+        if (((CheckBox) findViewById(R.id.cb_end_time)).isChecked()) {
+            dateTo.setVisibility(View.VISIBLE);
+            timeTo.setVisibility(View.VISIBLE);
+        } else {
+            dateTo.setVisibility(View.INVISIBLE);
+            timeTo.setVisibility(View.INVISIBLE);
+        }
     }
 
     protected void revealActivity(int x, int y) {
