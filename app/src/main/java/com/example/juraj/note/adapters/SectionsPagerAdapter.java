@@ -20,6 +20,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     
 
     List<AbstractFragent> fragments;
+    FragmentNotes noteFragment;
 
     public SectionsPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -27,6 +28,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         fragments.add(FragmentMap.newInstance("", ""));
         fragments.add(FragmentNotes.newInstance("", ""));
         fragments.add(FragmentCalendar.newInstance("", ""));
+        noteFragment = (FragmentNotes)fragments.get(1);
 
     }
 
@@ -44,5 +46,10 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
       return fragments.get(position).getTitle();
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        noteFragment.refreshGridView();
     }
 }
