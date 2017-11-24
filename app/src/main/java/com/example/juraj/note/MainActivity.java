@@ -6,7 +6,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -104,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
             noteToSave.setTitle(res.get(Constants.NOTE_TITLE));
             noteToSave.setText(res.get(Constants.NOTE_TEXT));
             DateFormat df = SimpleDateFormat.getDateTimeInstance();
+            //Todo date from, date to, map location
             try {
                 Date date = df.parse(res.get(Constants.NOTE_CREATED));
                 Toast.makeText(this, res.get(Constants.NOTE_CREATED), Toast.LENGTH_LONG).show();

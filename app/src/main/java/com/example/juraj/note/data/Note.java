@@ -21,7 +21,8 @@ public class Note {
 
     @NotNull
     private java.util.Date created;
-    private java.util.Date notification;
+    private java.util.Date date_from;
+    private java.util.Date date_to;
     private String latlon;
 
     @Generated
@@ -33,12 +34,13 @@ public class Note {
     }
 
     @Generated
-    public Note(Long id, String title, String text, java.util.Date created, java.util.Date notification, String latlon) {
+    public Note(Long id, String title, String text, java.util.Date created, java.util.Date date_from, java.util.Date date_to, String latlon) {
         this.id = id;
         this.title = title;
         this.text = text;
         this.created = created;
-        this.notification = notification;
+        this.date_from = date_from;
+        this.date_to = date_to;
         this.latlon = latlon;
     }
 
@@ -80,12 +82,20 @@ public class Note {
         this.created = created;
     }
 
-    public java.util.Date getNotification() {
-        return notification;
+    public java.util.Date getDate_from() {
+        return date_from;
     }
 
-    public void setNotification(java.util.Date notification) {
-        this.notification = notification;
+    public void setDate_from(java.util.Date date_from) {
+        this.date_from = date_from;
+    }
+
+    public java.util.Date getDate_to() {
+        return date_to;
+    }
+
+    public void setDate_to(java.util.Date date_to) {
+        this.date_to = date_to;
     }
 
     public String getLatlon() {

@@ -13,6 +13,7 @@ import com.example.juraj.note.fragments.FragmentNotes;
  */
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    
 
     public SectionsPagerAdapter(FragmentManager fm) {
         super(fm);

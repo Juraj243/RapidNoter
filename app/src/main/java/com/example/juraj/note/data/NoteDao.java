@@ -26,8 +26,9 @@ public class NoteDao extends AbstractDao<Note, Long> {
         public final static Property Title = new Property(1, String.class, "title", false, "TITLE");
         public final static Property Text = new Property(2, String.class, "text", false, "TEXT");
         public final static Property Created = new Property(3, java.util.Date.class, "created", false, "CREATED");
-        public final static Property Notification = new Property(4, java.util.Date.class, "notification", false, "NOTIFICATION");
-        public final static Property Latlon = new Property(5, String.class, "latlon", false, "LATLON");
+        public final static Property Date_from = new Property(4, java.util.Date.class, "date_from", false, "DATE_FROM");
+        public final static Property Date_to = new Property(5, java.util.Date.class, "date_to", false, "DATE_TO");
+        public final static Property Latlon = new Property(6, String.class, "latlon", false, "LATLON");
     }
 
 
@@ -47,8 +48,9 @@ public class NoteDao extends AbstractDao<Note, Long> {
                 "\"TITLE\" TEXT NOT NULL ," + // 1: title
                 "\"TEXT\" TEXT NOT NULL ," + // 2: text
                 "\"CREATED\" INTEGER NOT NULL ," + // 3: created
-                "\"NOTIFICATION\" INTEGER," + // 4: notification
-                "\"LATLON\" TEXT);"); // 5: latlon
+                "\"DATE_FROM\" INTEGER," + // 4: date_from
+                "\"DATE_TO\" INTEGER," + // 5: date_to
+                "\"LATLON\" TEXT);"); // 6: latlon
     }
 
     /** Drops the underlying database table. */
@@ -69,14 +71,19 @@ public class NoteDao extends AbstractDao<Note, Long> {
         stmt.bindString(3, entity.getText());
         stmt.bindLong(4, entity.getCreated().getTime());
  
-        java.util.Date notification = entity.getNotification();
-        if (notification != null) {
-            stmt.bindLong(5, notification.getTime());
+        java.util.Date date_from = entity.getDate_from();
+        if (date_from != null) {
+            stmt.bindLong(5, date_from.getTime());
+        }
+ 
+        java.util.Date date_to = entity.getDate_to();
+        if (date_to != null) {
+            stmt.bindLong(6, date_to.getTime());
         }
  
         String latlon = entity.getLatlon();
         if (latlon != null) {
-            stmt.bindString(6, latlon);
+            stmt.bindString(7, latlon);
         }
     }
 
@@ -92,14 +99,19 @@ public class NoteDao extends AbstractDao<Note, Long> {
         stmt.bindString(3, entity.getText());
         stmt.bindLong(4, entity.getCreated().getTime());
  
-        java.util.Date notification = entity.getNotification();
-        if (notification != null) {
-            stmt.bindLong(5, notification.getTime());
+        java.util.Date date_from = entity.getDate_from();
+        if (date_from != null) {
+            stmt.bindLong(5, date_from.getTime());
+        }
+ 
+        java.util.Date date_to = entity.getDate_to();
+        if (date_to != null) {
+            stmt.bindLong(6, date_to.getTime());
         }
  
         String latlon = entity.getLatlon();
         if (latlon != null) {
-            stmt.bindString(6, latlon);
+            stmt.bindString(7, latlon);
         }
     }
 
@@ -115,8 +127,9 @@ public class NoteDao extends AbstractDao<Note, Long> {
             cursor.getString(offset + 1), // title
             cursor.getString(offset + 2), // text
             new java.util.Date(cursor.getLong(offset + 3)), // created
-            cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)), // notification
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5) // latlon
+            cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)), // date_from
+            cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)), // date_to
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6) // latlon
         );
         return entity;
     }
@@ -127,8 +140,9 @@ public class NoteDao extends AbstractDao<Note, Long> {
         entity.setTitle(cursor.getString(offset + 1));
         entity.setText(cursor.getString(offset + 2));
         entity.setCreated(new java.util.Date(cursor.getLong(offset + 3)));
-        entity.setNotification(cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)));
-        entity.setLatlon(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setDate_from(cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)));
+        entity.setDate_to(cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)));
+        entity.setLatlon(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
      }
     
     @Override

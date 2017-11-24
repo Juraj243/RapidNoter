@@ -18,7 +18,8 @@ public class MainDbGenerator {
         note_item.addStringProperty("title").notNull();
         note_item.addStringProperty("text").notNull();  //Not null is SQL constrain
         note_item.addDateProperty("created").notNull();
-        note_item.addDateProperty("notification");
+        note_item.addDateProperty("date_from");
+        note_item.addDateProperty("date_to");
         note_item.addStringProperty("latlon");
 
         //  ./app/src/main/java/   ----   com/codekrypt/greendao/db is the full path
