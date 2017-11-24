@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.example.juraj.note.MainActivity;
 import com.example.juraj.note.R;
@@ -16,12 +17,13 @@ import com.example.juraj.note.data.Note;
 
 import java.util.ArrayList;
 
-public class FragmentNotes extends Fragment {
+public class FragmentNotes extends AbstractFragent {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     private String mParam1;
     private String mParam2;
+    private String title = "Notes";
     private GridViewAdapter adapter;
 
     public FragmentNotes() {
@@ -61,5 +63,12 @@ public class FragmentNotes extends Fragment {
         return view;
     }
 
+    public String getTitle() {
+        return title;
+    }
 
+    @Override
+    public void refreshGridView() {
+
+    }
 }

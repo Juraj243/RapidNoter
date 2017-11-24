@@ -9,12 +9,13 @@ import android.view.ViewGroup;
 
 import com.example.juraj.note.R;
 
-public class FragmentCalendar extends Fragment {
+public class FragmentCalendar extends AbstractFragent {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     private String mParam1;
     private String mParam2;
+    private String title = "Calendar";
 
 
     public FragmentCalendar() {
@@ -46,4 +47,12 @@ public class FragmentCalendar extends Fragment {
         return inflater.inflate(R.layout.fragment_calendar, container, false);
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public void refreshGridView() {
+        //refresh
+    }
 }
