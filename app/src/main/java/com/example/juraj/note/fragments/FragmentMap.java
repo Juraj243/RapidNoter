@@ -16,7 +16,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class FragmentMap extends Fragment implements OnMapReadyCallback{
+public class FragmentMap extends AbstractFragent implements OnMapReadyCallback{
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -24,6 +24,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback{
     private MapView mapView;
     private String mParam1;
     private String mParam2;
+    private String title = "Map";
 
     public FragmentMap() {
         // Required empty public constructor
@@ -72,5 +73,14 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback{
         LatLng sydney = new LatLng(48.153556, 17.100034);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Slavin"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public void refreshGridView() {
+
     }
 }

@@ -17,12 +17,13 @@ import com.example.juraj.note.data.Note;
 
 import java.util.ArrayList;
 
-public class FragmentNotes extends Fragment {
+public class FragmentNotes extends AbstractFragent {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     private String mParam1;
     private String mParam2;
+    private String title = "Notes";
     private GridViewAdapter adapter;
 
     public FragmentNotes() {
@@ -60,5 +61,14 @@ public class FragmentNotes extends Fragment {
         ((GridView)view.findViewById(R.id.notes_container)).setAdapter(adapter);
 
         return view;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public void refreshGridView() {
+
     }
 }
