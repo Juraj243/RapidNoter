@@ -83,8 +83,8 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         //DaoMaster.createAllTables(db, true);
         //daoSession.getNoteDao().deleteAll();
         //daoSession.getNoteDao().insert(new Note(1l,"Nazov","poznamka, poznamka", new Date(), null, ""));
-
-        /*Cart c = new Cart();
+/*
+        Cart c = new Cart();
         c.setName("cart1");
         daoSession.getCartDao().insert(c);
 

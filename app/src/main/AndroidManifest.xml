@@ -30,6 +30,12 @@
             android:name=".CreateNoteActivity"
             android:theme="@style/AppThemeReveal.Transparent"
             android:windowSoftInputMode="adjustResize"></activity>
+        <activity
+            android:name=".CreateCartActivity"
+            android:theme="@style/AppThemeReveal.Transparent"
+            android:windowSoftInputMode="adjustResize">
+
+        </activity>
     </application>
 
 </manifest>
