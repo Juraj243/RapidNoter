@@ -115,11 +115,6 @@ public class FragmentCalendar extends AbstractFragent {
         return title;
     }
 
-    @Override
-    public void refreshGridView() {
-        //refresh
-    }
-
     private class NotedDates implements DayViewDecorator {
 
         private final ArrayList<CalendarDay> dates;
