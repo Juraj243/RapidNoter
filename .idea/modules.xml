@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/RapidNoter.iml" filepath="$PROJECT_DIR$/RapidNoter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/RapidNoter.iml" filepath="$PROJECT_DIR$/.idea/RapidNoter.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/greendao-db/greendao-db.iml" filepath="$PROJECT_DIR$/greendao-db/greendao-db.iml" />
     </modules>
