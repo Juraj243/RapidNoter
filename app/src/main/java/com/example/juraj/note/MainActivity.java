@@ -76,12 +76,11 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
         daoSession = SessionManager.getInstance(this).getDaoSession();
         final Database db = SessionManager.getInstance().getDb();
-        //DaoMaster.dropAllTables(db, true);
-        //DaoMaster.createAllTables(db, true);
+//        DaoMaster.dropAllTables(db, true);
+//        DaoMaster.createAllTables(db, true);
         //daoSession.getNoteDao().deleteAll();
         //daoSession.getNoteDao().insert(new Note(1l,"Nazov","poznamka, poznamka", new Date(), null, ""));
-/*
-        Cart c = new Cart();
+        /*Cart c = new Cart();
         c.setName("cart1");
         daoSession.getCartDao().insert(c);
 
@@ -138,7 +137,6 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         ci5.setCartId(c2.getId());
         c.getCartItems().add(ci5);
         daoSession.getCartItemDao().insert(ci5);
-
 
         daoSession.getCartDao().update(c2);
 */
@@ -270,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    presentActivity(view, CreateCartActivity.class);
+                    presentActivity(view, CreateNoteActivity.class);
                 }
             });
         }
