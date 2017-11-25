@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.Toast;
 import com.example.juraj.note.adapters.SectionsPagerAdapter;
+import com.example.juraj.note.data.Cart;
+import com.example.juraj.note.data.CartItem;
 import com.example.juraj.note.data.Constants;
 import com.example.juraj.note.data.DaoMaster;
 import com.example.juraj.note.data.DaoSession;
@@ -73,10 +75,25 @@ public class MainActivity extends AppCompatActivity {
 
         daoSession =  SessionManager.getInstance(this).getDaoSession();
         final Database db = SessionManager.getInstance().getDb();
-       //DaoMaster.dropAllTables(db, true);
-        //DaoMaster.createAllTables(db, true);
+
+       DaoMaster.dropAllTables(db, true);
+        DaoMaster.createAllTables(db, true);
         //daoSession.getNoteDao().deleteAll();
         //daoSession.getNoteDao().insert(new Note(1l,"Nazov","poznamka, poznamka", new Date(), null, ""));
+
+        Cart c = new Cart();
+        c.setName("cart1");
+        daoSession.getCartDao().insert(c);
+
+        CartItem ci = new CartItem();
+        ci.setDate(new Date());
+        ci.setCart(c);
+        ci.setName("item1");
+        ci.setCartId(c.getId());
+        c.getCartItems().add(ci);
+        daoSession.getCartItemDao().insert(ci);
+        daoSession.getCartDao().update(c);
+
         findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

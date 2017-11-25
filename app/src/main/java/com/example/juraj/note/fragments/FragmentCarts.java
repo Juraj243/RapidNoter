@@ -9,6 +9,8 @@ import android.widget.GridView;
 
 import com.example.juraj.note.R;
 import com.example.juraj.note.adapters.GridViewAdapter;
+import com.example.juraj.note.adapters.GridViewAdapterCarts;
+import com.example.juraj.note.data.Cart;
 import com.example.juraj.note.data.DaoSession;
 import com.example.juraj.note.data.Note;
 import com.example.juraj.note.data.SessionManager;
@@ -22,10 +24,10 @@ public class FragmentCarts extends AbstractFragent {
     private String mParam1;
     private String mParam2;
     private String title = "Carts";
-    private GridViewAdapter adapter;
+    private GridViewAdapterCarts adapter;
     private View view;
     private  GridView gridView;
-    private ArrayList<Note> notes = new ArrayList<>();
+    private ArrayList<Cart> notes = new ArrayList<>();
 
     public FragmentCarts() {
         // Required empty public constructor
@@ -55,7 +57,7 @@ public class FragmentCarts extends AbstractFragent {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_carts, container, false);
         loadNotes();
-        adapter = new GridViewAdapter(getContext(), R.layout.template_cart,notes);
+        adapter = new GridViewAdapterCarts(getContext(), R.layout.template_cart,notes);
         gridView = view.findViewById(R.id.carts_container);
         gridView.setAdapter(adapter);
         return view;
@@ -67,7 +69,7 @@ public class FragmentCarts extends AbstractFragent {
 
     public void refreshGridView() {
         loadNotes();
-        adapter = new GridViewAdapter(getContext(), R.layout.template_cart,notes);
+        adapter = new GridViewAdapterCarts(getContext(), R.layout.template_cart,notes);
         gridView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
@@ -75,7 +77,7 @@ public class FragmentCarts extends AbstractFragent {
     private void loadNotes(){
         DaoSession daoSession = SessionManager.getInstance().getDaoSession();
         notes.removeAll(notes);
-        notes.addAll(daoSession.getNoteDao().loadAll());
+        notes.addAll(daoSession.getCartDao().loadAll());
     }
 
 }
