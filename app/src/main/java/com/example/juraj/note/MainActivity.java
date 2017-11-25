@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.Toast;
 import com.example.juraj.note.adapters.SectionsPagerAdapter;
-import com.example.juraj.note.data.Cart;
 import com.example.juraj.note.data.CartItem;
 import com.example.juraj.note.data.Constants;
 import com.example.juraj.note.data.DaoMaster;
@@ -24,8 +23,6 @@ import com.example.juraj.note.data.DaoSession;
 import com.example.juraj.note.data.Note;
 import com.example.juraj.note.data.SessionManager;
 import com.example.juraj.note.fragments.FragmentCartItems;
-
-
 import org.greenrobot.greendao.database.Database;
 
 import java.text.DateFormat;
@@ -38,13 +35,13 @@ import java.util.Date;
  * Created by Juraj on 18.11.2017.
  */
 
-public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener{
+public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
 
     private static final int CREATE_NOTE_REQUEST_CODE = 1;
-    private SectionsPagerAdapter mSectionsPagerAdapter;
     public ViewPager mViewPager;
+    public TabLayout tabLayout;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
     private DaoSession daoSession;
-    public  TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         mViewPager.setCurrentItem(1);
         mViewPager.addOnPageChangeListener(this);
 
-        tabLayout= (TabLayout) findViewById(R.id.tabs);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -77,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         });
 
 
-        daoSession =  SessionManager.getInstance(this).getDaoSession();
+        daoSession = SessionManager.getInstance(this).getDaoSession();
         final Database db = SessionManager.getInstance().getDb();
         //DaoMaster.dropAllTables(db, true);
         //DaoMaster.createAllTables(db, true);
@@ -261,7 +258,24 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
     @Override
     public void onPageSelected(int position) {
-
+        FloatingActionButton fab = findViewById(R.id.fab);
+        if (position == 3) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), CreateCartActivity.class);
+                    startActivityForResult(intent, CREATE_NOTE_REQUEST_CODE);
+                }
+            });
+        } else {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
+                    startActivityForResult(intent, CREATE_NOTE_REQUEST_CODE);
+                }
+            });
+        }
     }
 
     @Override
@@ -269,11 +283,11 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
     }
 
-    public void showCartItemsFragment(ArrayList<CartItem> items){
+    public void showCartItemsFragment(ArrayList<CartItem> items) {
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         FragmentCartItems fragmentCartItems = FragmentCartItems.newInstance(items);
-        transaction.replace(R.id.frameLayout,fragmentCartItems).addToBackStack(null).commit();
+        transaction.replace(R.id.frameLayout, fragmentCartItems).addToBackStack(null).commit();
 
     }
 }
