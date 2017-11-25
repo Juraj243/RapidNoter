@@ -31,6 +31,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:minHeight="150dp"
+        android:minWidth="150dp"
         android:layout_marginTop="8dp"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         app:layout_constraintTop_toBottomOf="@+id/map_ll_button_container"
