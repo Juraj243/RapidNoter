@@ -32,8 +32,8 @@ public class FragmentMap extends AbstractFragent implements OnMapReadyCallback {
     private String mParam1;
     private String mParam2;
     private String title = "Map";
-    private int notesWithPosCount = 0;
     private static ArrayList<Note> notes;
+    private int notesWithPosition = 0;
 
     public FragmentMap() {
         // Required empty public constructor
@@ -82,7 +82,7 @@ public class FragmentMap extends AbstractFragent implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         gMap = googleMap;
-        LatLng sydney = new LatLng(48.153556, 17.100034);
+
         gMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
@@ -94,20 +94,21 @@ public class FragmentMap extends AbstractFragent implements OnMapReadyCallback {
 
         for (int i = 0; i < notes.size(); i++) {
             Note item = notes.get(i);
-            if (item.getLatitude() != null && !item.getLatitude().equals("")) {
-                double lat = Double.parseDouble(item.getLatitude());
-                double lon = Double.parseDouble(item.getLongitude());
+            if (item.getLatitude() != 0 && item.getLongitude()!=0) {
+                double lat = item.getLatitude();
+                double lon = item.getLongitude();
 
                 gMap.addMarker(new MarkerOptions().position(
                         new LatLng(lat, lon)));
                 builder.include(new LatLng(lat, lon));
+                notesWithPosition++;
             }
         }
 
-        /*LatLngBounds bounds = builder.build();
-        gMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));*/
-        //gMap.addMarker(new MarkerOptions().position(sydney).title("Slavin"));
-        gMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        if(notesWithPosition>0) {
+            LatLngBounds bounds = builder.build();
+            gMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
+        }
     }
 
     public String getTitle() {

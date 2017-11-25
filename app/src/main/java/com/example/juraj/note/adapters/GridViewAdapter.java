@@ -45,6 +45,10 @@ public class GridViewAdapter extends ArrayAdapter<Note> {
             item = inflater.inflate(R.layout.template_note, parent, false);
             text = item.findViewById(R.id.tv_note_text_small);
             text.setText(data.get(position).getText());
+            text = item.findViewById(R.id.tv_note_title_small);
+            text.setText(data.get(position).getTitle());
+        } else {
+
         }
         return item;
     }

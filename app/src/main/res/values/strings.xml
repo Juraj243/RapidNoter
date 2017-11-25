@@ -9,4 +9,17 @@
     <string name="time_from">time_from</string>
     <string name="date_from">date_from</string>
     <string name="time_to">time_to</string>
+
+<string-array name="alarm_times">
+    <item>At event time</item>
+    <item>5min before event</item>
+    <item>10min before event</item>
+    <item>20min before event</item>
+    <item>45min before event</item>
+    <item>1h before event</item>
+    <item>2h before event</item>
+    <item>5h before event</item>
+    <item>1d before event</item>
+    <item>Custom</item>
+</string-array>
 </resources>

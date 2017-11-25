@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
@@ -16,22 +17,34 @@ import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateInterpolator;
-import android.widget.*;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
+
 import com.example.juraj.note.data.Constants;
-import com.google.android.gms.maps.*;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class CreateNoteActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
     public static final String EXTRA_CIRC_REV_X = "EXTRA_CIRCULAR_REVEAL_X";
     public static final String EXTRA_CIRC_REV_Y = "EXTRA_CIRCULAR_REVEAL_Y";
-    private final ArrayList<String> data = new ArrayList<>();
     View root;
     private EditText focusedEditText;
     private int revealX;
@@ -45,10 +58,14 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
     private TextView timeTo;
     private TextView dateFrom;
     private TextView timeFrom;
+    private boolean saveDates = false;
 
     // dates
     private Calendar calendarFrom = Calendar.getInstance();
     private Calendar calendarTo = Calendar.getInstance();
+    private CheckBox checkBoxAlarmtime;
+    private Spinner alarmTimesSpinner;
+    private ArrayAdapter<CharSequence> spinnerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,31 +95,7 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         findViewById(R.id.fb_save_note).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                EditText et = (EditText) findViewById(R.id.et_new_note_title);
-                intent.putExtra(Constants.NOTE_TITLE, et.getText().toString());
-                et = (EditText) findViewById(R.id.et_new_note_text);
-                intent.putExtra(Constants.NOTE_TEXT, et.getText().toString());
-
-                DateFormat sdf = SimpleDateFormat.getDateTimeInstance();
-                Date date = new Date();
-                /*data.add(Constants.NOTE_CREATED, sdf.format(date));
-                data.add(Constants.NOTE_NOTIFICATION, "");
-
-                if(location != null) {
-                    data.add(Constants.NOTE_LATITUDE, String.valueOf(location.latitude));
-                    data.add(Constants.NOTE_LONGITUDE, String.valueOf(location.longitude));
-                } else {
-                    data.add(Constants.NOTE_LATITUDE, "");
-                    data.add(Constants.NOTE_LONGITUDE, "");
-                }*/
-                intent.putExtra(Constants.NOTE_CREATED, sdf.format(date));
-
-                intent.putExtra(Constants.NOTE_DATE_FROM, sdf.format(calendarFrom.getTime()));
-                intent.putExtra(Constants.NOTE_DATE_TO, sdf.format(calendarTo.getTime()));
-
-                intent.putStringArrayListExtra("note_data", data);
-                setResult(RESULT_OK, intent);
+                setResult(RESULT_OK, buildResult(intent));
                 unRevealActivity();
             }
         });
@@ -157,36 +150,49 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
             root.setVisibility(View.VISIBLE);
         }
 
-        dateTo = (TextView) findViewById(R.id.tv_date_To);
-        dateFrom = (TextView) findViewById(R.id.tv_date_From);
-        timeTo = (TextView) findViewById(R.id.tv_time_To);
-        timeFrom = (TextView) findViewById(R.id.tv_time_From);
-
+        dateTo = (Button) findViewById(R.id.tv_date_To);
+        dateFrom = (Button) findViewById(R.id.tv_date_From);
+        timeTo = (Button) findViewById(R.id.tv_time_To);
+        timeFrom = (Button) findViewById(R.id.tv_time_From);
+        checkBoxAlarmtime = (CheckBox) findViewById(R.id.cb_alarm_time);
 
         Date date = new Date();
-        setDateField(dateFrom, date);
-        setTimeField(timeFrom, date);
+        setDateField(dateFrom, date, false);
+        setTimeField(timeFrom, date, false);
         date.setTime(date.getTime() + 1000 * 60 * 60);
-        setDateField(dateTo, date);
-        setTimeField(timeTo, date);
+        setDateField(dateTo, date, false);
+        setTimeField(timeTo, date, false);
         dateFrom.setOnClickListener(this);
         dateTo.setOnClickListener(this);
         timeFrom.setOnClickListener(this);
         timeTo.setOnClickListener(this);
-        findViewById(R.id.cb_end_time).setOnClickListener(this);
-        toggleEndTimeListener();
+        checkBoxAlarmtime.setOnClickListener(this);
+        alarmTimesSpinner = (Spinner) findViewById(R.id.sp_alarm_time);
+        spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.alarm_times, android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        alarmTimesSpinner.setAdapter(spinnerAdapter);
+
+        //findViewById(R.id.cb_end_time).setOnClickListener(this);
+        //toggleAlarmTimeListener();
     }
 
-    private void setTimeField(TextView tw, Date date) {
+    private void setTimeField(TextView tw, Date date, boolean picked) {
         DateFormat format = SimpleDateFormat.getTimeInstance(DateFormat.SHORT);
-        tw.setText(format.format(date));
+        if(picked)
+            tw.setText("✓ "+format.format(date));
+        else
+            tw.setText(format.format(date));
+
     }
 
-    private void setDateField(TextView tw, Date date) {
+    private void setDateField(TextView tw, Date date, boolean picked) {
         DateFormat time = SimpleDateFormat.getDateInstance();
-        tw.setText(time.format(date));
-    }
+        if(picked)
+            tw.setText("✓ "+time.format(date));
+        else
+            tw.setText(time.format(date));
 
+    }
 
     @Override
     public void onBackPressed() {
@@ -210,20 +216,26 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 c.set(year, month, day);
                 if (from) {
-                    setDateField(dateFrom, c.getTime());
+                    setDateField(dateFrom, c.getTime(), true);
 //                    if (calendarFrom == null) {
 //                        calendarFrom = c;
 //                    } else {
                     calendarFrom.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
 //                    }
+                    dateFrom.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorPrimaryDark));
+                    saveDates = true;
                 } else {
-                    setDateField(dateTo, c.getTime());
+                    setDateField(dateTo, c.getTime(), true);
 //                    if (calendarTo == null) {
 //                        calendarTo = c;
 //                    } else {
                     calendarTo.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
 //                    }
+                    dateFrom.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorPrimaryDark));
+                    dateTo.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorPrimaryDark));
+                    saveDates = true;
                 }
+
             }
         }, year, month, day).show();
     }
@@ -238,24 +250,30 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
             public void onTimeSet(TimePicker timePicker, int hour, int minute) {
                 c.set(0, 0, 0, hour, minute);
                 if (from) {
-                    setTimeField(timeFrom, c.getTime());
+                    setTimeField(timeFrom, c.getTime(), true);
 //                    if (calendarFrom == null) {
 //                        calendarFrom = c;
 //                    } else {
                     calendarFrom.set(Calendar.HOUR, c.get(Calendar.HOUR));
                     calendarFrom.set(Calendar.MINUTE, c.get(Calendar.MINUTE));
 //                    }
+                    timeFrom.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorPrimaryDark));
+                    saveDates = true;
                 } else {
-                    setTimeField(timeTo, c.getTime());
+                    setTimeField(timeTo, c.getTime(), true);
 //                    if (calendarTo == null) {
 //                        calendarTo = c;
 //                    } else {
                     calendarTo.set(Calendar.HOUR, c.get(Calendar.HOUR));
                     calendarTo.set(Calendar.MINUTE, c.get(Calendar.MINUTE));
 //                    }
+                    timeFrom.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorPrimaryDark));
+                    timeTo.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorPrimaryDark));
+                    saveDates = true;
                 }
             }
         }, hour, minute, true).show();
+
     }
 
     @Override
@@ -274,14 +292,14 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
             case R.id.tv_time_To:
                 onTimeTextClick(false);
                 break;
-            case R.id.cb_end_time:
-                toggleEndTimeListener();
+            case R.id.cb_alarm_time:
+                toggleAlarmTimeListener();
                 break;
             default:
                 focusedEditText.getText().append(" ").append(view.getTag().toString());
-                if (focusedEditText.getId() == R.id.et_new_note_title) {
+                if(focusedEditText.getId() == R.id.et_new_note_title){
                     View v = findViewById(R.id.et_new_note_text);
-                    if (v.requestFocus()) {
+                    if(v.requestFocus()) {
                         setFocusedET(v);
                     }
                 }
@@ -289,14 +307,40 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    private void toggleEndTimeListener() {
-        if (((CheckBox) findViewById(R.id.cb_end_time)).isChecked()) {
-            dateTo.setVisibility(View.VISIBLE);
-            timeTo.setVisibility(View.VISIBLE);
+    private void toggleAlarmTimeListener() {
+        if (((CheckBox) findViewById(R.id.cb_alarm_time)).isChecked()) {
+            alarmTimesSpinner.setEnabled(true);
         } else {
-            dateTo.setVisibility(View.INVISIBLE);
-            timeTo.setVisibility(View.INVISIBLE);
+            alarmTimesSpinner.setEnabled(false);
         }
+    }
+
+    private Intent buildResult(Intent result){
+        EditText et = (EditText) findViewById(R.id.et_new_note_title);
+        result.putExtra(Constants.NOTE_TITLE, et.getText().toString());
+        et = (EditText) findViewById(R.id.et_new_note_text);
+        result.putExtra(Constants.NOTE_TEXT, et.getText().toString());
+
+        DateFormat sdf = SimpleDateFormat.getDateTimeInstance();
+        Date date = new Date();
+
+        if(location != null) {
+            result.putExtra(Constants.NOTE_LATITUDE, location.latitude);
+            result.putExtra(Constants.NOTE_LONGITUDE, location.longitude);
+        } else {
+            result.putExtra(Constants.NOTE_LATITUDE, 0.0);
+            result.putExtra(Constants.NOTE_LONGITUDE, 0.0);
+        }
+
+        result.putExtra(Constants.NOTE_CREATED, sdf.format(date));
+
+        if(saveDates) {
+            System.out.println(sdf.format(calendarFrom.getTime()));
+            result.putExtra(Constants.NOTE_DATE_FROM, sdf.format(calendarFrom.getTime()));
+            result.putExtra(Constants.NOTE_DATE_TO, sdf.format(calendarTo.getTime()));
+        }
+
+        return result;
     }
 
     protected void revealActivity(int x, int y) {

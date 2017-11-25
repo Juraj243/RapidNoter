@@ -102,13 +102,10 @@ public class MainActivity extends AppCompatActivity {
             Note noteToSave = new Note();
             noteToSave.setTitle(data.getStringExtra(Constants.NOTE_TITLE));
             noteToSave.setText(data.getStringExtra(Constants.NOTE_TEXT));
-            /*noteToSave.setTitle(res.get(Constants.NOTE_TITLE));
-            noteToSave.setText(res.get(Constants.NOTE_TEXT));*/
-            // TODO datefrom date to
-            //noteToSave.setLatitude(res.get((Constants.NOTE_LATITUDE)));
-            //noteToSave.setLongitude(res.get((Constants.NOTE_LONGITUDE)));
+
+            noteToSave.setLatitude(data.getDoubleExtra(Constants.NOTE_LATITUDE, 0));
+            noteToSave.setLongitude(data.getDoubleExtra(Constants.NOTE_LONGITUDE, 0));
             DateFormat df = SimpleDateFormat.getDateTimeInstance();
-            //Todo map location
             setDateForNote(noteToSave, data, Constants.NOTE_DATE_FROM);
             setDateForNote(noteToSave, data, Constants.NOTE_DATE_TO);
             try {

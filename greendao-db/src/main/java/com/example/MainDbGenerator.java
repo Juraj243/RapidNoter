@@ -20,8 +20,8 @@ public class MainDbGenerator {
         note_item.addDateProperty("created").notNull();
         note_item.addDateProperty("date_from");
         note_item.addDateProperty("date_to");
-        note_item.addStringProperty("latitude");
-        note_item.addStringProperty("longitude");
+        note_item.addDoubleProperty("latitude");
+        note_item.addDoubleProperty("longitude");
 
         //  ./app/src/main/java/   ----   com/codekrypt/greendao/db is the full path
         new DaoGenerator().generateAll(schema, "./app/src/main/java");
