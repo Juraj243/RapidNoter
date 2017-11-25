@@ -30,6 +30,7 @@ public class NoteDao extends AbstractDao<Note, Long> {
         public final static Property Date_to = new Property(5, java.util.Date.class, "date_to", false, "DATE_TO");
         public final static Property Latitude = new Property(6, Double.class, "latitude", false, "LATITUDE");
         public final static Property Longitude = new Property(7, Double.class, "longitude", false, "LONGITUDE");
+        public final static Property Notification = new Property(8, java.util.Date.class, "notification", false, "NOTIFICATION");
     }
 
 
@@ -52,7 +53,8 @@ public class NoteDao extends AbstractDao<Note, Long> {
                 "\"DATE_FROM\" INTEGER," + // 4: date_from
                 "\"DATE_TO\" INTEGER," + // 5: date_to
                 "\"LATITUDE\" REAL," + // 6: latitude
-                "\"LONGITUDE\" REAL);"); // 7: longitude
+                "\"LONGITUDE\" REAL," + // 7: longitude
+                "\"NOTIFICATION\" INTEGER);"); // 8: notification
     }
 
     /** Drops the underlying database table. */
@@ -92,6 +94,11 @@ public class NoteDao extends AbstractDao<Note, Long> {
         if (longitude != null) {
             stmt.bindDouble(8, longitude);
         }
+ 
+        java.util.Date notification = entity.getNotification();
+        if (notification != null) {
+            stmt.bindLong(9, notification.getTime());
+        }
     }
 
     @Override
@@ -125,6 +132,11 @@ public class NoteDao extends AbstractDao<Note, Long> {
         if (longitude != null) {
             stmt.bindDouble(8, longitude);
         }
+ 
+        java.util.Date notification = entity.getNotification();
+        if (notification != null) {
+            stmt.bindLong(9, notification.getTime());
+        }
     }
 
     @Override
@@ -142,7 +154,8 @@ public class NoteDao extends AbstractDao<Note, Long> {
             cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)), // date_from
             cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)), // date_to
             cursor.isNull(offset + 6) ? null : cursor.getDouble(offset + 6), // latitude
-            cursor.isNull(offset + 7) ? null : cursor.getDouble(offset + 7) // longitude
+            cursor.isNull(offset + 7) ? null : cursor.getDouble(offset + 7), // longitude
+            cursor.isNull(offset + 8) ? null : new java.util.Date(cursor.getLong(offset + 8)) // notification
         );
         return entity;
     }
@@ -157,6 +170,7 @@ public class NoteDao extends AbstractDao<Note, Long> {
         entity.setDate_to(cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)));
         entity.setLatitude(cursor.isNull(offset + 6) ? null : cursor.getDouble(offset + 6));
         entity.setLongitude(cursor.isNull(offset + 7) ? null : cursor.getDouble(offset + 7));
+        entity.setNotification(cursor.isNull(offset + 8) ? null : new java.util.Date(cursor.getLong(offset + 8)));
      }
     
     @Override

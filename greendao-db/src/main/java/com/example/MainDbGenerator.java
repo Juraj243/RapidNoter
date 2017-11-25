@@ -15,6 +15,8 @@ public class MainDbGenerator {
 
         //Entity i.e. Class to be stored in the database // ie table LOG
         Entity note_item= schema.addEntity("Note");
+        Entity cart_table =schema.addEntity("Cart");
+        Entity cart_item =schema.addEntity("CartItem");
 
 
         note_item.addIdProperty(); //It is the primary key for uniquely identifying a row
@@ -25,6 +27,15 @@ public class MainDbGenerator {
         note_item.addDateProperty("date_to");
         note_item.addDoubleProperty("latitude");
         note_item.addDoubleProperty("longitude");
+        note_item.addDateProperty("notification");
+
+        cart_table.addIdProperty();
+        cart_table.addDateProperty("created").notNull();
+        cart_table.addStringProperty("name").notNull();
+
+        cart_item.addIdProperty();
+        cart_item.addStringProperty("name").notNull();
+        cart_item.addDateProperty("created").notNull();
 
 
         Entity cart = schema.addEntity("Cart");

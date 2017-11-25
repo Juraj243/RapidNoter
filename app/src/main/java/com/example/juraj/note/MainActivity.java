@@ -6,7 +6,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -34,13 +33,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Juraj on 18.11.2017.
  */
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener{
 
     private static final int CREATE_NOTE_REQUEST_CODE = 1;
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -56,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("RapidNoter");
         setSupportActionBar(toolbar);
-
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -65,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(1);
+        mViewPager.addOnPageChangeListener(this);
 
         tabLayout= (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
@@ -81,13 +79,12 @@ public class MainActivity extends AppCompatActivity {
 
         daoSession =  SessionManager.getInstance(this).getDaoSession();
         final Database db = SessionManager.getInstance().getDb();
-
-       DaoMaster.dropAllTables(db, true);
-        DaoMaster.createAllTables(db, true);
+        //DaoMaster.dropAllTables(db, true);
+        //DaoMaster.createAllTables(db, true);
         //daoSession.getNoteDao().deleteAll();
         //daoSession.getNoteDao().insert(new Note(1l,"Nazov","poznamka, poznamka", new Date(), null, ""));
 
-        Cart c = new Cart();
+        /*Cart c = new Cart();
         c.setName("cart1");
         daoSession.getCartDao().insert(c);
 
@@ -147,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         daoSession.getCartDao().update(c2);
-
+*/
         findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -255,6 +252,21 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(CreateNoteActivity.EXTRA_CIRC_REV_X, revX);
         intent.putExtra(CreateNoteActivity.EXTRA_CIRC_REV_Y, revY);
         startActivityForResult(intent, CREATE_NOTE_REQUEST_CODE);
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 
     public void showCartItemsFragment(ArrayList<CartItem> items){

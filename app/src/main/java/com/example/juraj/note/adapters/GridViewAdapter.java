@@ -1,6 +1,8 @@
 package com.example.juraj.note.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -32,13 +34,13 @@ public class GridViewAdapter extends ArrayAdapter<Note> {
     }
 
     public GridViewAdapter(@NonNull Context context, @LayoutRes int resource, ArrayList<Note> data) {
-        super(context, resource,data);
+        super(context, resource, data);
         this.data = data;
     }
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View item = convertView;
         if (item == null) {
             inflater = ((MainActivity) getContext()).getLayoutInflater();
@@ -47,6 +49,13 @@ public class GridViewAdapter extends ArrayAdapter<Note> {
             text.setText(data.get(position).getText());
             text = item.findViewById(R.id.tv_note_title_small);
             text.setText(data.get(position).getTitle());
+            item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Note note = data.get(position);
+                    showDetailFragmentDialog(view, note);
+                }
+            });
         } else {
 
         }
@@ -55,6 +64,25 @@ public class GridViewAdapter extends ArrayAdapter<Note> {
 
     @Override
     public int getCount() {
-         return data.size();
+        return data.size();
+    }
+
+    private void showDetailFragmentDialog(View view, Note note) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        View v = inflater.inflate(R.layout.note_detail_fragment, null);
+        ((TextView) v.findViewById(R.id.tv_detail_text)).setText(note.getText());
+        if (note.getDate_from() != null) {
+
+        }
+        builder.setTitle(note.getTitle())
+                .setView(v)
+                .setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .setNeutralButton("Cancel", null);
+        builder.show();
     }
 }

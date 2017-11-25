@@ -99,7 +99,7 @@ public class FragmentMap extends AbstractFragent implements OnMapReadyCallback {
                 double lon = item.getLongitude();
 
                 gMap.addMarker(new MarkerOptions().position(
-                        new LatLng(lat, lon)));
+                        new LatLng(lat, lon))).setTitle(item.getTitle());
                 builder.include(new LatLng(lat, lon));
                 notesWithPosition++;
             }

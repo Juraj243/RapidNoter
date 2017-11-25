@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import com.example.juraj.note.MainActivity;
 import com.example.juraj.note.R;
 import com.example.juraj.note.data.Cart;
 import com.example.juraj.note.data.CartItem;
-import com.example.juraj.note.data.Note;
 
 import java.util.ArrayList;
 import java.util.List;

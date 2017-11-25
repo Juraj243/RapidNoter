@@ -18,8 +18,6 @@ import java.util.List;
  */
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
-    
-
     List<AbstractFragent> fragments;
     FragmentNotes noteFragment;
 

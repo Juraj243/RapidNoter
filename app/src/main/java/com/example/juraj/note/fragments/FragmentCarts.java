@@ -8,11 +8,9 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 
 import com.example.juraj.note.R;
-import com.example.juraj.note.adapters.GridViewAdapter;
 import com.example.juraj.note.adapters.GridViewAdapterCarts;
 import com.example.juraj.note.data.Cart;
 import com.example.juraj.note.data.DaoSession;
-import com.example.juraj.note.data.Note;
 import com.example.juraj.note.data.SessionManager;
 
 import java.util.ArrayList;

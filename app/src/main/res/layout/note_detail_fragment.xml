@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/tv_detail_created"
+        android:layout_width="387dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="created"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_detail_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="text text text text tetx text text text text"
+        android:textAlignment="textStart"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_detail_created" />
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_detail_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <Button
+            android:id="@+id/tv_detail_datefrom"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="185dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/date_from"
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/tv_detail_dateto"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/tv_detail_timefrom"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="185dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/time_from"
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/tv_detail_timeto"
+            app:layout_constraintTop_toBottomOf="@+id/tv_detail_datefrom" />
+
+        <Button
+            android:id="@+id/tv_detail_dateto"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="186dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/date_to"
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toRightOf="@id/tv_detail_datefrom"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/tv_detail_timeto"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="186dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/time_to"
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toRightOf="@+id/tv_detail_timefrom"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_detail_dateto" />
+    </android.support.constraint.ConstraintLayout>
+</android.support.constraint.ConstraintLayout>

@@ -3,7 +3,6 @@ package com.example.juraj.note.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,6 @@ import com.example.juraj.note.MainActivity;
 import com.example.juraj.note.R;
 import com.example.juraj.note.adapters.GridViewAdapterCartItems;
 import com.example.juraj.note.data.CartItem;
-import com.example.juraj.note.data.DaoSession;
-import com.example.juraj.note.data.SessionManager;
 
 import java.util.ArrayList;
 
