@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.juraj.note.fragments.AbstractFragent;
 import com.example.juraj.note.fragments.FragmentCalendar;
+import com.example.juraj.note.fragments.FragmentCarts;
 import com.example.juraj.note.fragments.FragmentMap;
 import com.example.juraj.note.fragments.FragmentNotes;
 
@@ -28,6 +29,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         fragments.add(FragmentMap.newInstance("", ""));
         fragments.add(FragmentNotes.newInstance("", ""));
         fragments.add(FragmentCalendar.newInstance("", ""));
+        fragments.add(FragmentCarts.newInstance("", ""));
         noteFragment = (FragmentNotes)fragments.get(1);
 
     }
@@ -40,7 +42,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // Show 3 total pages.
-        return 3;
+        return fragments.size();
     }
 
     @Override
