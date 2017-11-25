@@ -12,7 +12,9 @@ import android.widget.TextView;
 
 import com.example.juraj.note.MainActivity;
 import com.example.juraj.note.R;
+import com.example.juraj.note.data.DaoSession;
 import com.example.juraj.note.data.Note;
+import com.example.juraj.note.data.SessionManager;
 
 import java.util.ArrayList;
 
@@ -21,11 +23,17 @@ import java.util.ArrayList;
  */
 
 public class GridViewAdapter extends ArrayAdapter<Note> {
-    private ArrayList<Note> data = new ArrayList<>();
+    private ArrayList<Note> data;
+    private LayoutInflater inflater;
+    private TextView text;
 
-    public GridViewAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull ArrayList<Note> objects) {
-        super(context, resource, objects);
-        data = objects;
+    public void setData(ArrayList<Note> data) {
+        this.data = data;
+    }
+
+    public GridViewAdapter(@NonNull Context context, @LayoutRes int resource, ArrayList<Note> data) {
+        super(context, resource,data);
+        this.data = data;
     }
 
     @NonNull
@@ -33,13 +41,16 @@ public class GridViewAdapter extends ArrayAdapter<Note> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View item = convertView;
         if (item == null) {
-            LayoutInflater inflater = ((MainActivity) getContext()).getLayoutInflater();
+            inflater = ((MainActivity) getContext()).getLayoutInflater();
             item = inflater.inflate(R.layout.template_note, parent, false);
-            TextView text = item.findViewById(R.id.tv_note_text_small);
+            text = item.findViewById(R.id.tv_note_text_small);
             text.setText(data.get(position).getText());
-        } else {
-
         }
         return item;
+    }
+
+    @Override
+    public int getCount() {
+         return data.size();
     }
 }

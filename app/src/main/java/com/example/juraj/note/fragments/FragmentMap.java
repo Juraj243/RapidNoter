@@ -114,8 +114,4 @@ public class FragmentMap extends AbstractFragent implements OnMapReadyCallback {
         return title;
     }
 
-    @Override
-    public void refreshGridView() {
-
-    }
 }

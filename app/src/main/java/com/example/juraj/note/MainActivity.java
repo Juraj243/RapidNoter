@@ -14,12 +14,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.Toast;
-
 import com.example.juraj.note.adapters.SectionsPagerAdapter;
 import com.example.juraj.note.data.Constants;
 import com.example.juraj.note.data.DaoMaster;
 import com.example.juraj.note.data.DaoSession;
 import com.example.juraj.note.data.Note;
+import com.example.juraj.note.data.SessionManager;
+
+
 
 import org.greenrobot.greendao.database.Database;
 
@@ -68,11 +70,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "note", null);
-        final Database db = helper.getWritableDb();
-        DaoMaster dMaster = new DaoMaster(db);
-        daoSession = dMaster.newSession();
-        //DaoMaster.dropAllTables(db, true);
+
+        daoSession =  SessionManager.getInstance(this).getDaoSession();
+        final Database db = SessionManager.getInstance().getDb();
+       //DaoMaster.dropAllTables(db, true);
         //DaoMaster.createAllTables(db, true);
         //daoSession.getNoteDao().deleteAll();
         //daoSession.getNoteDao().insert(new Note(1l,"Nazov","poznamka, poznamka", new Date(), null, ""));
@@ -119,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             daoSession.getNoteDao().insert(noteToSave);
+            mViewPager.getAdapter().notifyDataSetChanged();
+
         } else if (resultCode == RESULT_CANCELED) {
             Toast.makeText(this, "Canceled", Toast.LENGTH_SHORT).show();
         }

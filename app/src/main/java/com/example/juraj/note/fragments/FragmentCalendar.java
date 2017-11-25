@@ -51,8 +51,4 @@ public class FragmentCalendar extends AbstractFragent {
         return title;
     }
 
-    @Override
-    public void refreshGridView() {
-        //refresh
-    }
 }

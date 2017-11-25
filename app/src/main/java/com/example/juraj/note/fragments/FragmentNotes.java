@@ -14,6 +14,7 @@ import com.example.juraj.note.R;
 import com.example.juraj.note.adapters.GridViewAdapter;
 import com.example.juraj.note.data.DaoSession;
 import com.example.juraj.note.data.Note;
+import com.example.juraj.note.data.SessionManager;
 
 import java.util.ArrayList;
 
@@ -25,6 +26,9 @@ public class FragmentNotes extends AbstractFragent {
     private String mParam2;
     private String title = "Notes";
     private GridViewAdapter adapter;
+    private View view;
+    private  GridView gridView;
+    private ArrayList<Note> notes = new ArrayList<>();
 
     public FragmentNotes() {
         // Required empty public constructor
@@ -52,14 +56,11 @@ public class FragmentNotes extends AbstractFragent {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_notes, container, false);
-        DaoSession daoSession = ((MainActivity)getActivity()).getDaoSession();
-        ArrayList<Note> notes = (ArrayList<Note>) daoSession.getNoteDao().loadAll();
-
-        adapter = new GridViewAdapter(getContext(), R.layout.template_note, notes);
-
-        ((GridView)view.findViewById(R.id.notes_container)).setAdapter(adapter);
-
+        view = inflater.inflate(R.layout.fragment_notes, container, false);
+        loadNotes();
+        adapter = new GridViewAdapter(getContext(), R.layout.template_note,notes);
+        gridView = view.findViewById(R.id.notes_container);
+        gridView.setAdapter(adapter);
         return view;
     }
 
@@ -67,8 +68,17 @@ public class FragmentNotes extends AbstractFragent {
         return title;
     }
 
-    @Override
     public void refreshGridView() {
-
+        loadNotes();
+        adapter = new GridViewAdapter(getContext(), R.layout.template_note,notes);
+        gridView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
+
+    private void loadNotes(){
+        DaoSession daoSession = SessionManager.getInstance().getDaoSession();
+        notes.removeAll(notes);
+        notes.addAll(daoSession.getNoteDao().loadAll());
+    }
+
 }

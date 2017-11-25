@@ -8,6 +8,4 @@ import android.support.v4.app.Fragment;
 
 public abstract class AbstractFragent extends Fragment {
     public abstract String getTitle();
-    public abstract void refreshGridView();
-
 }
