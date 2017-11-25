@@ -2,49 +2,43 @@ package com.example.juraj.note;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
-
-import com.example.juraj.note.R;
 import com.example.juraj.note.data.Constants;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-public class CreateCartActivity extends AppCompatActivity implements View.OnClickListener {
+public class CreateCartActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener {
+
     public static final String EXTRA_CIRC_REV_X = "EXTRA_CIRCULAR_REVEAL_X";
     public static final String EXTRA_CIRC_REV_Y = "EXTRA_CIRCULAR_REVEAL_Y";
+    private static final String[] SHOPPING_TEMPLATES = {"Eggs:Eggs", "Ham:Ham", "Milk:Milk", "Cheese:Cheese"};
     View root;
     private EditText focusedEditText;
     private int revealX;
@@ -75,22 +69,8 @@ public class CreateCartActivity extends AppCompatActivity implements View.OnClic
         final Intent intent = getIntent();
         root = findViewById(R.id.create_note_root);
 
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        Button b;
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.ll_item_temp_container);
-        LinearLayoutCompat.LayoutParams lp = new LinearLayoutCompat.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        //int count = prefs.getAll().size()/2;
-        for (int i = 0; i < 5; i++) {
-            prefs.edit().putString("text" + String.valueOf(i + 1), "pivo " + i).putString("title" + String.valueOf(i + 1), "Pivo " + i).apply();
-            b = new Button(this, null, R.style.Widget_AppCompat_Button_Borderless, R.style.Widget_AppCompat_Button_Borderless);
-            b.setText(prefs.getString("title" + String.valueOf(i + 1), null));
-            b.setTag(prefs.getString("text" + String.valueOf(i + 1), null));
-            b.setLayoutParams(lp);
-            b.setOnClickListener(this);
-            System.out.println("creating button " + i);
-            linearLayout.addView(b);
-        }
+        generateTemplates();
+        generateTemplateButtons();
 
         findViewById(R.id.fb_save_note).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,10 +96,34 @@ public class CreateCartActivity extends AppCompatActivity implements View.OnClic
                 if (b) setFocusedET(view);
             }
         });
-
-
     }
 
+    private void generateTemplates() {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        Set<String> set = new LinkedHashSet<>(Arrays.asList(SHOPPING_TEMPLATES));
+        prefs.edit().putStringSet("SHOPPING_TEMPLATES", set).apply();
+    }
+
+    private void generateTemplateButtons() {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        Set<String> templates = prefs.getStringSet("SHOPPING_TEMPLATES", new HashSet<String>());
+
+        Button b;
+        LinearLayout linearLayout = findViewById(R.id.ll_item_temp_container);
+        LinearLayoutCompat.LayoutParams lp = new LinearLayoutCompat.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        for (String s : templates) {
+            b = new Button(this, null, R.style.Widget_AppCompat_Button_Borderless, R.style.Widget_AppCompat_Button_Borderless);
+            int colonIdx = s.indexOf(":");
+            b.setText(s.substring(0, colonIdx));
+            b.setTag(s.substring(colonIdx + 1, s.length()));
+            b.setLayoutParams(lp);
+            b.setOnClickListener(this);
+            b.setOnLongClickListener(this);
+            linearLayout.addView(b);
+        }
+    }
 
 
     @Override
@@ -138,20 +142,43 @@ public class CreateCartActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View view) {
 
         switch (view.getId()) {
-
             case R.id.cb_alarm_time:
                 toggleAlarmTimeListener();
                 break;
             default:
                 focusedEditText.getText().append("\n").append(view.getTag().toString());
-                if(focusedEditText.getId() == R.id.et_new_cart_title){
+                focusedEditText.setSelection(focusedEditText.getText().length());
+                if (focusedEditText.getId() == R.id.et_new_cart_title) {
                     View v = findViewById(R.id.et_new_cart_items);
-                    if(v.requestFocus()) {
+                    if (v.requestFocus()) {
                         setFocusedET(v);
                     }
                 }
                 break;
         }
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+        switch (view.getId()) {
+            default:
+                String shoppingText = focusedEditText.getText().toString();
+                if (shoppingText.contains("\n" + view.getTag().toString())) {
+                    shoppingText = shoppingText.replaceFirst("\n" + view.getTag().toString(), "");
+                } else if (shoppingText.contains(view.getTag().toString())) {
+                    shoppingText = shoppingText.replaceFirst(view.getTag().toString(), "");
+                }
+                focusedEditText.setText(shoppingText);
+
+                if (focusedEditText.getId() == R.id.et_new_cart_title) {
+                    View v = findViewById(R.id.et_new_cart_items);
+                    if (v.requestFocus()) {
+                        setFocusedET(v);
+                    }
+                }
+        }
+        // true -> onClick will not be called
+        return true;
     }
 
     private void toggleAlarmTimeListener() {
@@ -162,7 +189,7 @@ public class CreateCartActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    private Intent buildResult(Intent result){
+    private Intent buildResult(Intent result) {
         EditText et = (EditText) findViewById(R.id.et_new_note_title);
         result.putExtra(Constants.NOTE_TITLE, et.getText().toString());
         et = (EditText) findViewById(R.id.et_new_note_text);
@@ -171,7 +198,7 @@ public class CreateCartActivity extends AppCompatActivity implements View.OnClic
         DateFormat sdf = SimpleDateFormat.getDateTimeInstance();
         Date date = new Date();
 
-        if(location != null) {
+        if (location != null) {
             result.putExtra(Constants.NOTE_LATITUDE, location.latitude);
             result.putExtra(Constants.NOTE_LONGITUDE, location.longitude);
         } else {
@@ -181,7 +208,7 @@ public class CreateCartActivity extends AppCompatActivity implements View.OnClic
 
         result.putExtra(Constants.NOTE_CREATED, sdf.format(date));
 
-        if(saveDates) {
+        if (saveDates) {
             System.out.println(sdf.format(calendarFrom.getTime()));
             result.putExtra(Constants.NOTE_DATE_FROM, sdf.format(calendarFrom.getTime()));
             result.putExtra(Constants.NOTE_DATE_TO, sdf.format(calendarTo.getTime()));
@@ -221,6 +248,4 @@ public class CreateCartActivity extends AppCompatActivity implements View.OnClic
             finish();
         }
     }
-
-
 }

@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             public void onClick(View view) {
                 /*Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
                 startActivityForResult(intent, CREATE_NOTE_REQUEST_CODE);*/
-                presentActivity(view);
+                presentActivity(view, CreateNoteActivity.class);
             }
         });
 
@@ -240,12 +240,12 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         return daoSession;
     }
 
-    public void presentActivity(View view) {
+    public void presentActivity(View view, Class clazz) {
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, view, "transition");
         int revX = (int) (view.getX() + view.getWidth() / 2);
         int revY = (int) (view.getY() + view.getHeight() / 2);
 
-        Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
+        Intent intent = new Intent(getApplicationContext(), clazz);
         intent.putExtra(CreateNoteActivity.EXTRA_CIRC_REV_X, revX);
         intent.putExtra(CreateNoteActivity.EXTRA_CIRC_REV_Y, revY);
         startActivityForResult(intent, CREATE_NOTE_REQUEST_CODE);
@@ -263,16 +263,14 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(getApplicationContext(), CreateCartActivity.class);
-                    startActivityForResult(intent, CREATE_NOTE_REQUEST_CODE);
+                    presentActivity(view, CreateCartActivity.class);
                 }
             });
         } else {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
-                    startActivityForResult(intent, CREATE_NOTE_REQUEST_CODE);
+                    presentActivity(view, CreateCartActivity.class);
                 }
             });
         }
