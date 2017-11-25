@@ -3,11 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RapidNoter.iml" filepath="$PROJECT_DIR$/RapidNoter.iml" />
-      <module fileurl="file://E:\AndroidStudioProjects\RapidNoter\RapidNoter.iml" filepath="E:\AndroidStudioProjects\RapidNoter\RapidNoter.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://E:\AndroidStudioProjects\RapidNoter\app\app.iml" filepath="E:\AndroidStudioProjects\RapidNoter\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/greendao-db/greendao-db.iml" filepath="$PROJECT_DIR$/greendao-db/greendao-db.iml" />
-      <module fileurl="file://E:\AndroidStudioProjects\RapidNoter\greendao-db\greendao-db.iml" filepath="E:\AndroidStudioProjects\RapidNoter\greendao-db\greendao-db.iml" />
     </modules>
   </component>
 </project>

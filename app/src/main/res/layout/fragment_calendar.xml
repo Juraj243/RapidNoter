@@ -1,12 +1,33 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.juraj.note.fragments.FragmentCalendar">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             tools:context="com.example.juraj.note.fragments.FragmentCalendar">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+    <android.support.v7.widget.LinearLayoutCompat android:id="@+id/calendarLayout"
+                                                  android:layout_width="0dp"
+                                                  android:layout_height="350dp"
+                                                  app:layout_constraintTop_toTopOf="parent"
+                                                  app:layout_constraintLeft_toLeftOf="parent"
+                                                  app:layout_constraintRight_toRightOf="parent">
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/calendarView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:mcv_showOtherDates="all"
+                app:mcv_selectionColor="@color/colorAccent"/>
+    </android.support.v7.widget.LinearLayoutCompat>
+
+
+    <ListView
+            android:id="@+id/calendarDayView"
+            app:layout_constraintTop_toBottomOf="@+id/calendarLayout"
+            app:layout_constraintLeft_toRightOf="parent"
+            android:layout_height="wrap_content" android:layout_width="wrap_content"
+    >
+    </ListView>
+
+</android.support.constraint.ConstraintLayout>
